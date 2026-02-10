@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+
+# env files (VERY IMPORTANT 🔥)
+.env
+.env.local
+.env.development
+.env.production
+
+# logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# build / dist (agar use karo)
+dist/
+build/
+
+# uploads (images/files)
+uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/
+
+# cache
+.cache/
