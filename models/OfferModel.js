@@ -1,34 +1,73 @@
-
 const mongoose = require("mongoose");
 
-const OfferSchema = new mongoose.Schema({
+const OfferSchema = new mongoose.Schema(
+{
+  /* Offer title */
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+    maxlength: 100
+  },
 
-  title: String, // Summer Sale
+  /* optional description */
+  description: {
+    type: String,
+    trim: true,
+    maxlength: 300
+  },
 
+  /* discount percentage */
   discountPercent: {
     type: Number,
-    required: true
+    required: true,
+    min: 1,
+    max: 90
   },
 
-  // optional (either category OR brand)
+  /* flat discount (optional) */
+  discountAmount: {
+    type: Number,
+    min: 0
+  },
+
+  /* Apply on category OR brand */
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Category"
+    ref: "Category",
+    required: true,
+    default: null,
+    index: true
   },
 
-  brand: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Brand"
-  },
-
+  /* active or disabled */
   active: {
     type: Boolean,
-    default: true
+    default: true,
+    index: true
   },
-  expiresAt: {
-  type: Date
-}
 
-}, { timestamps: true });
+  /* time control */
+  startsAt: {
+    type: Date,
+    default: Date.now
+  },
+
+  expiresAt: {
+    type: Date
+  },
+
+  /* priority for sorting */
+  priority: {
+    type: Number,
+    default: 0
+  }
+
+},
+{
+  timestamps: true
+});
+
+
 
 module.exports = mongoose.model("Offer", OfferSchema);

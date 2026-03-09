@@ -56,20 +56,20 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-orderSchema.pre("save", function () {
+// orderSchema.pre("save", function () {
 
-  // totalAmount round
-  this.totalAmount =
-    Math.round(this.totalAmount * 100) / 100;
+//   // totalAmount round
+//   this.totalAmount =
+//     Math.round(this.totalAmount * 100) / 100;
 
-  // each item price round
-  this.items.forEach(item => {
-    item.price =
-      Math.round(item.price * 100) / 100;
-  });
+//   // each item price round
+//   this.items.forEach(item => {
+//     item.price =
+//       Math.round(item.price * 100) / 100;
+//   });
 
 
-});
+// });
  
 module.exports = mongoose.model("Order", orderSchema);
  

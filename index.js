@@ -16,6 +16,7 @@ const AdminOrderRoute = require("./Routes/AdminRoutes/AdminOrderRoute.js")
   const StatusboardRoute = require("./Routes/AdminRoutes/Admindeshboard.js")
 const AdminOfferRoute = require("./Routes/AdminRoutes/AdmiOfferRoute.js")
  const AdminBannerRoute = require("./Routes/AdminRoutes/AdminBannerRoute.js")
+ const  CreateOrderRoute = require("./Routes/UserRoutes/paymentroute.js")
 // admin route all 
 
 
@@ -38,7 +39,7 @@ app.use("/api", Productroute);
 app.use("/auth" , Authroute) ;
 app.use("/cart", CartRoute );
 app.use("/orders" ,OrderRoute) ;
-
+app.use("/payment", CreateOrderRoute)
 
 // admin api call
 app.use("/api" , AdminProductRoute);

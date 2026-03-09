@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "start": "node index.js"
-
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +18,8 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.1.5",
-    "multer": "^2.0.2"
+    "mongoose": "^9.2.1",
+    "multer": "^2.0.2",
+    "razorpay": "^2.9.6"
   }
 }
