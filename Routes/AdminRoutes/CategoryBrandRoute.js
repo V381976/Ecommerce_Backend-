@@ -1,19 +1,27 @@
 const express = require("express");
 const router = express.Router();
-const {Categorylist ,CategoryAdd ,CategoryDelete ,BrandList,AddBrand , BrandDelete} = require("../../Controllers/AdminControllers/CategoryandBrandControllers")
+const {
+  Categorylist,
+  CategoryAdd,
+  CategoryUpdate,
+  CategoryDelete,
+  BrandList,
+  AddBrand,
+  BrandUpdate,
+  BrandDelete,
+} = require("../../Controllers/AdminControllers/CategoryandBrandControllers");
 
-const {AdminAuthcheck} = require("../../Middleware/AdminAuthMiddleware")
+const { AdminAuthcheck, requirePermission } = require("../../Middleware/AdminAuthMiddleware");
+const canCategories = [AdminAuthcheck, requirePermission("categories", "products")];
 
-router.get("/categories", Categorylist )
-router.post("/categories",AdminAuthcheck,CategoryAdd )
-router.delete("/categories/:id",AdminAuthcheck , CategoryDelete)
+router.get("/categories", Categorylist);
+router.post("/categories", ...canCategories, CategoryAdd);
+router.put("/categories/:id", ...canCategories, CategoryUpdate);
+router.delete("/categories/:id", ...canCategories, CategoryDelete);
 
-
-
-
-router.get("/brands", BrandList )
-router.post("/brands",AdminAuthcheck, AddBrand)
-router.delete("/brands/:id", AdminAuthcheck, BrandDelete)
-
+router.get("/brands", BrandList);
+router.post("/brands", ...canCategories, AddBrand);
+router.put("/brands/:id", ...canCategories, BrandUpdate);
+router.delete("/brands/:id", ...canCategories, BrandDelete);
 
 module.exports = router;

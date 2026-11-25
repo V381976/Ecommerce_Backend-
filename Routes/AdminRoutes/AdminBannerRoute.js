@@ -1,15 +1,16 @@
- const express = require("express");
+const express = require("express");
 const router = express.Router();
- const {  Bannerget , CreateBanner , BannerToggle ,DeleteBanner  } = require("../../Controllers/AdminControllers/AdminBannerControllers")
-const {AdminAuthcheck} = require("../../Middleware/AdminAuthMiddleware") ;
-const{ bannerUpload } = require("../../Middleware/uploadMiddleware");
- 
- 
-router.get("/banner",  Bannerget);
-router.post("/banner", bannerUpload.single("image"),  AdminAuthcheck , CreateBanner);
-router.delete("/banner/:id", AdminAuthcheck,DeleteBanner);
-router.put("/banner/:id", AdminAuthcheck,BannerToggle);
+const { Bannerget, CreateBanner, BannerToggle, DeleteBanner, UpdateBanner, ReorderBanners } = require("../../Controllers/AdminControllers/AdminBannerControllers");
+const { AdminAuthcheck, requirePermission } = require("../../Middleware/AdminAuthMiddleware");
+const { bannerUpload } = require("../../Middleware/uploadMiddleware");
 
- module.exports = router;   
+const canContent = [AdminAuthcheck, requirePermission("content")];
 
+router.get("/banner", Bannerget);
+router.post("/banner", ...canContent, bannerUpload.single("image"), CreateBanner);
+router.delete("/banner/:id", ...canContent, DeleteBanner);
+router.put("/banner/:id", ...canContent, BannerToggle);
+router.patch("/banner/:id", ...canContent, UpdateBanner);
+router.put("/admin/banner-order", ...canContent, ReorderBanners);
 
+module.exports = router;

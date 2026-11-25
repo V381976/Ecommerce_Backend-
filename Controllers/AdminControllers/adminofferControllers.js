@@ -1,4 +1,5 @@
 const Offer = require("../../models/OfferModel");
+const { audit } = require("../../utils/audit");
 
 
 /* GET ACTIVE OFFERS */
@@ -48,6 +49,7 @@ const addOffer = async (req, res,next ) => {
       priority
     });
 
+    audit(req, "offer.create", { entity: "offer", entityId: offer._id, summary: `Created offer ${offer.title}` });
     res.status(201).json(offer);
 
   } catch (err) {
@@ -56,6 +58,23 @@ const addOffer = async (req, res,next ) => {
 };
 
 
+
+/* UPDATE OFFER */
+const updateOffer = async (req, res) => {
+  try {
+    const { title, description, discountPercent, category, startsAt, expiresAt, priority } = req.body;
+    const offer = await Offer.findByIdAndUpdate(
+      req.params.id,
+      { title, description, discountPercent, category, startsAt: startsAt || null, expiresAt: expiresAt || null, priority },
+      { returnDocument: "after", runValidators: true }
+    );
+    if (!offer) return res.status(404).json({ message: "Offer not found" });
+    audit(req, "offer.update", { entity: "offer", entityId: offer._id, summary: `Updated offer ${offer.title}` });
+    res.json(offer);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
 
 /* DELETE OFFER */
 const deleteOffer = async (req, res ,next ) => {
@@ -66,6 +85,7 @@ const deleteOffer = async (req, res ,next ) => {
     if (!offer)
       return res.status(404).json({ message: "Offer not found" });
 
+    audit(req, "offer.delete", { entity: "offer", entityId: offer._id, summary: `Deleted offer ${offer.title}` });
     res.json({ message: "Offer deleted successfully" });
 
   } catch (err) {
@@ -88,6 +108,7 @@ const toggleOffer = async (req, res ,next ) => {
 
     await offer.save();
 
+    audit(req, "offer.toggle", { entity: "offer", entityId: offer._id, summary: `${offer.active ? "Activated" : "Paused"} offer ${offer.title}` });
     res.json(offer);
 
   } catch (err) {
@@ -101,5 +122,6 @@ module.exports = {
   getOffers,
   addOffer,
   deleteOffer,
-  toggleOffer
+  toggleOffer,
+  updateOffer
 };

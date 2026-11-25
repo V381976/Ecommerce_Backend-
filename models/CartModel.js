@@ -6,6 +6,7 @@ const CartSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      index: true,
     },
 
     items: [
@@ -14,12 +15,15 @@ const CartSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Products",
         },
+        variantId: mongoose.Schema.Types.ObjectId,
         quantity: {
           type: Number,
           default: 1,
         },
       },
     ],
+
+    couponCode: String,
   },
   { timestamps: true }
 );
